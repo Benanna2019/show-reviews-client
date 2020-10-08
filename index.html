@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./node_modules/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <input id="search-value" />
+    <button onclick="search()">Search</button>
+  </body>
+</html>
+<script>
+  //   const axios = require('axios');
+
+  async function search() {
+    try {
+      const search = document.getElementById('search-value').value;
+      const resp = await axios.get(
+        `http://www.omdbapi.com/?apikey=83e70572&type=series&t=${search}`,
+      );
+      const show = resp.data;
+      console.log(resp);
+
+      const imdbId = show.imdbID;
+      const title = show.Title;
+      const plot = show.Plot;
+      const poster = show.Poster;
+      const actors = show.Actors;
+      const genre = show.Genre;
+      const runtime = show.Runtime;
+      const imdbRating = show.imdbRating;
+      const totalSeasons = show.totalSeasons;
+      const released = show.Released;
+      const rated = show.Rated;
+
+      const newResp = await axios.post('http://localhost:4000/create-show', {
+        imdbId,
+        title,
+        plot,
+        poster,
+        actors,
+        genre,
+        runtime,
+        imdbRating,
+        totalSeasons,
+        released,
+        rated,
+      });
+
+      console.log(newResp);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+</script>
